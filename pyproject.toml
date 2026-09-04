@@ -1,0 +1,36 @@
+[project]
+name = "quacksim"
+authors = [
+    {name = "Danilo Enoque Ferreira de Lima", email = "danilo.enoque.ferreira.de.lima@xfel.eu"},
+    ]
+version = '3.0.2'
+#dynamic=["version"]
+description = "Simulates angular streaking effect."
+requires-python = ">=3.7"
+keywords = ["angular streaking", "strong field approximation", "quantum mechanics"]
+classifiers = [
+          "Development Status :: 3 - Alpha",
+          "Environment :: Console",
+          "Intended Audience :: Developers",
+          "Intended Audience :: Science/Research",
+          "Operating System :: POSIX :: Linux",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.7",
+          "Topic :: Scientific/Engineering :: Information Analysis",
+          "Topic :: Scientific/Engineering :: Physics"
+          ]
+dependencies = [
+          "juliacall",
+          ]
+
+[tool.setuptools]
+packages = ["quacksim"]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.package-dir]
+quacksim = ""
+
+[tool.setuptools.package-data]
+quacksim= ["**/*"]
+

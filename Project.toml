@@ -1,0 +1,43 @@
+name = "QuackSim"
+uuid = "da450e9a-952d-45b1-babe-a413207209c2"
+version = "3.0.2"
+authors = ["Danilo Ferreira de Lima <danilo.enoque.ferreira.de.lima@xfel.de>"]
+
+[deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
+ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+EllipsisNotation = "da5c29d0-fa7d-589e-88eb-ea29b0a81949"
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
+Format = "1fa38f19-a742-5d3f-a2b9-30dd87b9d5f8"
+H5Zzstd = "f6f2d980-1ec6-471c-a70d-0270e22f1103"
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+OrdinaryDiffEqDefault = "50262376-6c5a-4cf5-baba-aaf4f84d72d7"
+OrdinaryDiffEqLowOrderRK = "1344f307-1e59-4825-a18e-ace9aa3fa4c6"
+OrdinaryDiffEqRosenbrock = "43230ef6-c299-4910-a778-202eb28ce4ce"
+OrdinaryDiffEqSDIRK = "2d112036-d095-4a1e-ab9a-08536f3ecdbf"
+OrdinaryDiffEqTsit5 = "b1df2697-797e-41e3-8120-5422d3b24e4a"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+ReadableRegex = "cbbcb084-453d-4c4c-b292-e315607ba6a4"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Tullio = "bc48ee85-29a4-5162-ae0b-a64e1601d4bc"
+
+[weakdeps]
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+
+[extensions]
+PythonCallExt = "PythonCall"
+
+[compat]
+ArgParse = "1.2.0"
+OrdinaryDiffEqDefault = "1, 2"
+OrdinaryDiffEqLowOrderRK = "1, 2"
+OrdinaryDiffEqRosenbrock = "1, 2"
+OrdinaryDiffEqSDIRK = "1, 2"
+OrdinaryDiffEqTsit5 = "1, 2"
