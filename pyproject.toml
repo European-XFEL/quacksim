@@ -3,7 +3,7 @@ name = "quacksim"
 authors = [
     {name = "Danilo Enoque Ferreira de Lima", email = "danilo.enoque.ferreira.de.lima@xfel.eu"},
     ]
-version = '3.0.2'
+version = '4.0.0'
 #dynamic=["version"]
 description = "Simulates angular streaking effect."
 requires-python = ">=3.7"

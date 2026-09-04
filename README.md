@@ -38,7 +38,7 @@ Otherwise, one may install this package as follows:
 ```
 julia
 ]
-add https://git.xfel.eu/machineLearning/quack-sim
+add https://github.com/European-XFEL/quacksim.git
 ```
 
 The following modules in Julia are necessary to run the notebooks.
@@ -62,7 +62,7 @@ Given a time-parametrization of the electric field, one can simulate the effect 
 A basis set simulation may be done as follows for the Coherent QUACK algorithm:
 
 ```
-cd quack-sim/scripts
+cd quacksim/scripts
 julia simulate_experiment.jl --input input.h5 \
                              --output output.h5 \
                              --laser-wavelength 1030.0 \
