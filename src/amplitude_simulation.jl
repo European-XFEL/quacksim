@@ -201,9 +201,8 @@ function dbamp!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::SFAAmpSi
     ewp = reshape(dx, NW, Nθ, NA, 1)
     if p.alpha > 0
         Tl = 2π/p.ωl
-        #gauss = exp.(-0.5*(t - 0.5*Tl).^2/(p.alpha^2))
-        gauss = exp.(-0.5*(ω - ωc).^2/(p.alpha^2))
-        ewp = ewp * gauss
+        gauss = reshape(exp.(-0.5 .* (ω .- ωc).^2 ./ (p.alpha^2)), 1, 1, 1, Nω)
+        ewp = ewp .* gauss
     end
 
     # axes:
