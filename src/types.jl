@@ -232,6 +232,8 @@ struct SFAAmpSim <: AbstractEnergySimSettings
     beta::Real
     # polarization
     polarization
+    # regularization of width
+    alpha::Real
 end
 
 photoelectron_energy_axis(p::SFAAmpSim)::AbstractVector{<:Real} = p.W_axis

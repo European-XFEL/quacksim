@@ -198,6 +198,11 @@ function dbamp!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::SFAAmpSi
     # calculate the FEL electric wave packet as E . d
     v = reshape(-ω.*t, 1, 1, 1, Nω)
     ewp = reshape(dx, NW, Nθ, NA, 1)
+    if p.alpha > 0
+        Tl = 2π/p.ωl
+        gauss = exp.(-0.5*(t - 0.5*Tl).^2/(p.alpha^2))
+        ewp = ewp * gauss
+    end
 
     # axes:
     # 1. observed eTOF kinetic energy (W)
@@ -326,6 +331,11 @@ by multiplying by `fs_per_au`, and converted to nm, by multiplying by `nm_per_au
 - `nbins_Up`: Number of bins in the ponderomotive potential.
 - `n_parallel`: Number of asynchronous workers to use.
 - `use_gpu`: If true, use GPU processing.
+- `oversampling`: Number of additional samples over the physical allowed limit. Should be 1.
+- `integration`: Integration method.
+- `beta`: Controls angular dependence. Set to 0.0 for circular polarization. Set to 2.0 for linear polarization.
+- `polarization`: Can be horizontal or circular.
+- `alpha`: Regularization parameter, corresponding to smoothing the time profile with a Gaussian with the given width in atomic units. Set to zero or negative to apply no regularization.
 """
 function simulate_amplitude(;
                   fel_energy::Real,
@@ -340,10 +350,11 @@ function simulate_amplitude(;
                   nbins_Up::Integer=40,
                   n_parallel::Integer=1,
                   use_gpu::Bool=true,
-                  oversampling::Int64=2,
+                  oversampling::Int64=1,
                   integration::Symbol=:auto,
                   beta::Real=2.0,
-                  polarization=:horizontal
+                  polarization=:horizontal,
+                  alpha::Real=0.0
                   )
 
     #eval(macroexpand(Distributed, quote @everywhere using .QuackSim end))
@@ -417,7 +428,8 @@ function simulate_amplitude(;
                    cuitp,
                    false,
                    beta,
-                   polarization
+                   polarization,
+                   alpha
             );
         CUDA.synchronize()
     else
@@ -432,7 +444,8 @@ function simulate_amplitude(;
                    itp,
                    false,
                    beta,
-                   polarization
+                   polarization,
+                   alpha
             );
     end
 
@@ -489,6 +502,7 @@ function simulate_amplitude(;
         # oversampling
         fid["oversampling"] = oversampling
         fid["beta"] = beta;
+        fid["alpha"] = alpha;
     end
 
     nothing
