@@ -152,6 +152,7 @@ at the current time as ϕT - ϕ(t), where ϕ(t) is the integral from zero to the
 function dbamp!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::SFAAmpSim, t::Real, ϕT::AbstractArray{<:Real}, ω::AbstractArray{<:Real})
     NW, Nθ = length(p.W_axis), length(p.θ_axis)
     Nω = size(ω)[1] #length(p.ω_axis)
+    ωc = ω[1] # center omega
     NA = length(p.Al_axis)
 
     # create views for each output variable selecting
@@ -200,7 +201,8 @@ function dbamp!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::SFAAmpSi
     ewp = reshape(dx, NW, Nθ, NA, 1)
     if p.alpha > 0
         Tl = 2π/p.ωl
-        gauss = exp.(-0.5*(t - 0.5*Tl).^2/(p.alpha^2))
+        #gauss = exp.(-0.5*(t - 0.5*Tl).^2/(p.alpha^2))
+        gauss = exp.(-0.5*(ω - ωc).^2/(p.alpha^2))
         ewp = ewp * gauss
     end
 
@@ -335,7 +337,7 @@ by multiplying by `fs_per_au`, and converted to nm, by multiplying by `nm_per_au
 - `integration`: Integration method.
 - `beta`: Controls angular dependence. Set to 0.0 for circular polarization. Set to 2.0 for linear polarization.
 - `polarization`: Can be horizontal or circular.
-- `alpha`: Regularization parameter, corresponding to smoothing the time profile with a Gaussian with the given width in atomic units. Set to zero or negative to apply no regularization.
+- `alpha`: Regularization parameter, corresponding to weighting the energy spectrum with a Gaussian of the given std. deviation in atomic units. Set to zero or negative to apply no regularization.
 """
 function simulate_amplitude(;
                   fel_energy::Real,
