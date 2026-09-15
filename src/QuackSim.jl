@@ -1,24 +1,19 @@
-
 module QuackSim
 
-using Statistics
-using EllipsisNotation
-using Format
-using CUDA, KernelAbstractions
-using OrdinaryDiffEqDefault, OrdinaryDiffEqLowOrderRK, OrdinaryDiffEqRosenbrock, OrdinaryDiffEqSDIRK, OrdinaryDiffEqTsit5
-using Tullio
-
-using HDF5
-
-import Dates
-import Interpolations
-using Adapt
-import DelimitedFiles
-
-using FFTW
-
-using ReadableRegex
-using Interpolations
+using Adapt: adapt
+using CUDA: CUDA, CuArray, cu
+using Dates: Dates
+using EllipsisNotation: (..)
+using FFTW: fftfreq
+using Format: format
+using HDF5: h5open
+using Interpolations: Interpolations, Flat, linear_interpolation
+using OrdinaryDiffEqDefault: OrdinaryDiffEqDefault
+using OrdinaryDiffEqLowOrderRK: Euler
+using OrdinaryDiffEqRosenbrock: Rodas4P, Rodas5P
+using OrdinaryDiffEqSDIRK: KenCarp4
+using OrdinaryDiffEqTsit5: DiscreteCallback, ODEProblem, Tsit5, solve
+using Tullio: @tullio
 
 include("constants.jl")
 include("types.jl")
