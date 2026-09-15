@@ -111,9 +111,15 @@ Dictionary of species known for the gas.
 """
 orbitals = Dict(
             "" => Dict("species"=> "unknown", "n"=>1, "l"=>0, "m"=>0, "Ip"=>870.2, "filename"=>"", "tda"=>"", "orbital"=>"1s"),
+            "He1s" => Dict("species"=> "He", "n"=>1, "l"=>0, "m"=>0, "Ip"=>24.6, "filename"=>"pcs_He.txt", "tda"=>"pcs_He_v.txt", "orbital"=>"1s"),
             "Ne1s" => Dict("species"=> "Ne", "n"=>1, "l"=>0, "m"=>0, "Ip"=>870.2, "filename"=>"pcs_Ne.txt", "tda"=>"pcs_Ne_v.txt", "orbital"=>"1s"),
             "N1s" => Dict("species"=> "N", "n"=>1, "l"=>0, "m"=>0, "Ip"=>409.9, "filename"=>"pcs_N.txt", "tda"=>"pcs_N_v.txt", "orbital"=>"1s"),
             "Xe3d" => Dict("species"=> "Xe", "n"=>3, "l"=>2, "m"=>0, "Ip"=>689.0, "filename"=>"pcs_Xe.txt", "tda"=>"pcs_Xe3d_v.txt", "orbital"=>"3d"),
+            "C1s" => Dict("species"=> "C", "n"=>1, "l"=>0, "m"=>0, "Ip"=>291.0, "filename"=>"pcs_C.txt", "tda"=>"pcs_C_v.txt", "orbital"=>"1s"),
+            "O1s" => Dict("species"=> "O", "n"=>1, "l"=>0, "m"=>0, "Ip"=>537.0, "filename"=>"pcs_O.txt", "tda"=>"pcs_O_v.txt", "orbital"=>"1s"),
+            "S1s" => Dict("species"=> "S", "n"=>1, "l"=>0, "m"=>0, "Ip"=>2448.0, "filename"=>"pcs_S.txt", "tda"=>"pcs_S_v.txt", "orbital"=>"1s"),
+            "F1s" => Dict("species"=> "F", "n"=>1, "l"=>0, "m"=>0, "Ip"=>688.0, "filename"=>"pcs_F.txt", "tda"=>"pcs_F_v.txt", "orbital"=>"1s"),
+            # others, not used so often
             "Kr1s" => Dict("species"=> "Kr", "n"=>1, "l"=>0, "m"=>0, "Ip"=>14.326e3, "filename"=>"pcs_Kr1s.txt", "tda"=>"pcs_Kr1s_v.txt", "orbital"=>"1s"),
             # Xe5p Ip is actually 12.1 eV, but we are assuming multi-photon excitation for a 5 eV laser
             "Xe5p_multi" => Dict("species"=> "Xe", "n"=>5, "l"=>1, "m"=>0, "Ip"=>2.0, "filename"=>"pcs_Xe.txt", "tda"=>"pcs_Xe5p_v.txt", "orbital"=>"5p"),
@@ -122,7 +128,6 @@ orbitals = Dict(
             "Xe2p" => Dict("species"=> "Xe", "n"=>2, "l"=>1, "m"=>0, "Ip"=>4776.21, "filename"=>"pcs_Xe2p.txt", "tda"=>"pcs_Xe2p_v.txt", "orbital"=>"2p"),
             "Ar2s" => Dict("species"=> "Ar", "n"=>2, "l"=>0, "m"=>0, "Ip"=>326.0, "filename"=>"pcs_Ar.txt", "tda"=>"pcs_Ar_v.txt", "orbital"=>"2s"),
             "Xe3d52" => Dict("species"=> "Xe", "n"=>3, "l"=>2, "m"=>0, "Ip"=>676.0, "filename"=>"pcs_Xe.txt", "tda"=>"pcs_Xe3d_v.txt", "orbital"=>"3d"),
-            "He1s" => Dict("species"=> "He", "n"=>1, "l"=>0, "m"=>0, "Ip"=>24.6, "filename"=>"pcs_He.txt", "tda"=>"pcs_He_v.txt", "orbital"=>"1s"),
            );
 """
 Load modules cross section from files in data.
