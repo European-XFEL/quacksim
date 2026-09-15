@@ -42,9 +42,10 @@ export simulate_amplitude;
 Initialize the module.
 """
 function __init__()
-    load_cross_section()
-    #load_tda()
-    load_xatom_tda()
+    current_dir = @__DIR__
+    fname = joinpath(current_dir, "..", "data", "samples.h5")
+    println("Reading sample information from $(fname)")
+    global orbitals = get_sample_data(fname)
 end
 
 end

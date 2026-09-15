@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------
 # XATOM HFS : electronic structure of atoms and more, v2.0.0-15-g9da229
 #
-# Job started at  : 15-Sep-2026 10:22:47
+# Job started at  : 15-Sep-2026 13:11:29
 # ---------------------------------------------------------------------
 # ==============================================================================
 # DUMP command line: -s S -pcs -PE 0-3000 -dE 1 -v 
@@ -30062,6 +30062,6 @@ P.E.(eV)        Total          1s           2s           2p           3s        
 
 
 #
-# Current date/time  : 15-Sep-2026 10:23:14
-# elapsed real time  : 27.10 seconds on max-exfl-display002.desy.de
-# Job time(CPU_time) : 35.36 seconds on max-exfl-display002.desy.de
+# Current date/time  : 15-Sep-2026 13:11:56
+# elapsed real time  : 27.19 seconds on max-exfl-display002.desy.de
+# Job time(CPU_time) : 36.26 seconds on max-exfl-display002.desy.de

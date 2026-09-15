@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------
 # XATOM HFS : electronic structure of atoms and more, v2.0.0-15-g9da229
 #
-# Job started at  : 15-Sep-2026 10:22:15
+# Job started at  : 15-Sep-2026 13:10:02
 # ---------------------------------------------------------------------
 # Atom: S
 #   nuclear charge:   16
@@ -3075,6 +3075,6 @@ P.E.(eV)        Total          1s           2s           2p           3s        
 
 
 #
-# Current date/time  : 15-Sep-2026 10:22:41
-# elapsed real time  : 26.85 seconds on max-exfl-display002.desy.de
-# Job time(CPU_time) : 34.24 seconds on max-exfl-display002.desy.de
+# Current date/time  : 15-Sep-2026 13:10:28
+# elapsed real time  : 26.35 seconds on max-exfl-display002.desy.de
+# Job time(CPU_time) : 33.41 seconds on max-exfl-display002.desy.de
