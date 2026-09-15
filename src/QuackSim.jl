@@ -23,6 +23,7 @@ using Interpolations
 include("constants.jl")
 include("types.jl")
 
+include("xatom_data.jl")
 include("utils.jl")
 
 include("amplitude_derivatives.jl")
@@ -37,15 +38,5 @@ export calculate;
 export orbitals;
 
 export simulate_amplitude;
-
-"""
-Initialize the module.
-"""
-function __init__()
-    current_dir = @__DIR__
-    fname = joinpath(current_dir, "..", "data", "samples.h5")
-    println("Reading sample information from $(fname)")
-    global orbitals = get_sample_data(fname)
-end
 
 end

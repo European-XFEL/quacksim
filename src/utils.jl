@@ -9,39 +9,30 @@ end
 
 
 """
-Dictionary of species known for the gas.
-This is filled in __init__ and it is the result of `get_sample_data`.
+Build the orbital information and interpolations from `xatom_data`.
 """
-orbitals = Dict(
-           );
-
-"""
-Read XATOM calculations from HDF5 file.
-"""
-function get_sample_data(filename::String)
+function get_sample_data()
     o = Dict{String, Dict{String, Any}}()
-    fid = HDF5.h5open(filename, "r")
-    energy = read(fid["energy"])
-    for orb in keys(fid)
-        if orb == "energy"
-            continue
-        end
-        log("Reading information from orbital $(orb)")
-        o[orb] = Dict{String, Any}()
-        o[orb]["species"] = read(fid["$(orb)/species"])
-        o[orb]["orbital"] = read(fid["$(orb)/orbital"])
-        o[orb]["n"] = read(fid["$(orb)/n"])
-        o[orb]["l"] = read(fid["$(orb)/l"])
-        o[orb]["m"] = read(fid["$(orb)/m"])
-        o[orb]["Ip"] = read(fid["$(orb)/Ip"])
-        tda = read(fid["$(orb)/sum_tda"])
-        cross_section = read(fid["$(orb)/cross_section"])
-        o[orb]["tda_int"] = Interpolations.linear_interpolation(energy./eV_per_au, tda, extrapolation_bc=Interpolations.Line());
-        o[orb]["cross_section"] = Interpolations.linear_interpolation(energy./eV_per_au, cross_section, extrapolation_bc=Interpolations.Line());
+    energy = collect(xatom_energy) ./ eV_per_au
+    for (orb, d) in xatom_data
+        o[orb] = Dict{String, Any}(
+            "species" => d.species,
+            "orbital" => d.orbital,
+            "n" => d.n,
+            "l" => d.l,
+            "m" => d.m,
+            "Ip" => d.Ip,
+            "tda_int" => Interpolations.linear_interpolation(energy, d.tda, extrapolation_bc=Interpolations.Line()),
+            "cross_section" => Interpolations.linear_interpolation(energy, d.cross_section, extrapolation_bc=Interpolations.Line()),
+        )
     end
-    close(fid)
     return o
 end
+
+"""
+Dictionary of species known for the gas.
+"""
+const orbitals = get_sample_data()
 
 
 """
