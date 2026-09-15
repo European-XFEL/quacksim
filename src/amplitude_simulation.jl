@@ -181,7 +181,7 @@ function dbamp!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::SFAAmpSi
     qϕ = atan.(qy, qx)
     dx = similar(q2)
     if !p.flat_tda
-        dx .= sum(tda.(q2/2 .+ Ip) for tda ∈ values(p.tda))
+        dx .= tda.(q2/2 .+ Ip)
     else
         dx .= 1.0
     end

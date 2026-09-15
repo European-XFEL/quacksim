@@ -23,6 +23,7 @@ function get_sample_data(filename::String)
     fid = HDF5.h5open("../data/samples.h5", "r")
     energy = read(fid["energy"])
     for orb in keys(fid)
+        log("Readind information from orbital $(orb)")
         if orb == "energy"
             continue
         end
