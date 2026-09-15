@@ -180,7 +180,7 @@ function db!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::CustomFELSF
     qϕ = atan.(qy, qx)
     dx = similar(q2)
     if !p.flat_tda
-        dx .= tda.(q2/2 .+ Ip)
+        dx .= p.tda.(q2/2 .+ Ip)
     else
         dx .= 1.0
     end
@@ -272,7 +272,7 @@ function db_analyticϕ!(du::AbstractArray{<:Real}, u::AbstractArray{<:Real}, p::
     qϕ = atan.(qy, qx)
     dx = similar(q2)
     if !p.flat_tda
-        dx .= tda.(q2/2 .+ Ip)
+        dx .= p.tda.(q2/2 .+ Ip)
     else
         dx .= 1.0
     end
