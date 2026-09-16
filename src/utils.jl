@@ -20,7 +20,7 @@ Read XATOM calculations from HDF5 file.
 """
 function get_sample_data(filename::String)
     o = Dict{String, Dict{String, Any}}()
-    fid = HDF5.h5open("../data/samples.h5", "r")
+    fid = HDF5.h5open(filename, "r")
     energy = read(fid["energy"])
     for orb in keys(fid)
         if orb == "energy"
