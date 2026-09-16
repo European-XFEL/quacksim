@@ -13,5 +13,9 @@ xatom -s Ne -pcs -PE 0-3000 -dE 1 -v | sed -e 's/^#[[:space:]]*P.E.(eV)/P.E.(eV)
 
 The sed expression removes the comment from the header line, so that it can be read too, to identify the orbitals.
 
-After the files are produced, they can be read and converted into an HDF5 file for fast access using the notebook in `notebooks/XATOM_cross_sections_to_H5.ipynb`.
+After the files are produced, add the needed orbitals to `scripts/xatom_to_julia.jl` and run it to regenerate `src/xatom_data.jl`:
+
+```
+julia --project scripts/xatom_to_julia.jl
+```
 
