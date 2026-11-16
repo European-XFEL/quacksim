@@ -255,8 +255,8 @@ function calculate_amplitude(p::SFAAmpSim, ω::AbstractArray{<:Real}; integratio
     Ts, Te = 0, Tmax
     alg = nothing
     kwargs = Dict{Symbol, Any}(:dt => dt,
-                               :abstol => 1e-6,
-                               :reltol => 1e-3,
+                               :abstol => 1e-7,
+                               :reltol => 1e-5,
                                :callback => cb
                                )
     if integration == :Euler
