@@ -418,7 +418,7 @@ function simulate_amplitude(;
     # create simulation configuration
     itp = orbitals[gas]["tda_int"]
     if use_gpu
-        cuitp = Dict(k=>adapt(CuArray{Float32}, v) for (k, v) in itp)
+        cuitp = adapt(CuArray{Float32}, itp)
         p = SFAAmpSim(cu(W_axis),
                    cu(θ_axis),
                    ωx,
