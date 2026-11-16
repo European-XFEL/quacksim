@@ -1,6 +1,6 @@
 name = "QuackSim"
 uuid = "da450e9a-952d-45b1-babe-a413207209c2"
-version = "4.0.0"
+version = "4.0.1"
 authors = ["Danilo Ferreira de Lima <danilo.enoque.ferreira.de.lima@xfel.de>"]
 
 [deps]
