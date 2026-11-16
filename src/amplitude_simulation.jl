@@ -25,6 +25,7 @@ function calculate(p::CustomFELSFASim, tspan::Tuple{<:Real, <:Real}; integration
     NW, Nθ = length(p.W_axis), length(p.θ_axis)
     NA = length(p.Al_axis)
     Tl = 2π/p.ωl
+    (Ts, Te) = tspan
     # println("Settings:")
     # println("  - FEL mean energy, hbar ωx/eV = $(ωx.*eV_per_au)")
     # println("  - Time span/fs = $(tspan.*fs_per_au)")
@@ -41,7 +42,6 @@ function calculate(p::CustomFELSFASim, tspan::Tuple{<:Real, <:Real}; integration
         ϕT = similar(p.W_axis, NW, Nθ, NA)
         fill!(ϕT, 0.0)
 
-        Ts, Te = 0.0, Tl
         all_t_axis = collect(range(Ts, Te, step=dt))
         t_axis = collect(range(tspan[1], tspan[2], step=dt))
 
@@ -61,7 +61,6 @@ function calculate(p::CustomFELSFASim, tspan::Tuple{<:Real, <:Real}; integration
         cb = DiscreteCallback(condition_printout, callback_printout!; save_positions=(false,false));
 
         dt = 2π/p.ωx/100
-        Ts, Te = 0, Tl
         alg = nothing
         kwargs = Dict{Symbol, Any}(:dt => dt,
                                    :abstol => 1e-6,
@@ -77,6 +76,8 @@ function calculate(p::CustomFELSFASim, tspan::Tuple{<:Real, <:Real}; integration
             alg = Rodas4P()
         elseif integration == :KenCarp4
             alg = KenCarp4()
+        elseif integration == :ImplicitEuler
+            alg = ImplicitEuler()
         end
 
         ϕT = similar(p.W_axis, NW, Nθ, NA)
@@ -100,7 +101,6 @@ function calculate(p::CustomFELSFASim, tspan::Tuple{<:Real, <:Real}; integration
         uT = analytic_action ? similar(p.W_axis, 2, NW, Nθ, NA) : similar(p.W_axis, 3, NW, Nθ, NA)
         fill!(uT, 0.0)
 
-        (Ts, Te) = tspan
         prob = ODEProblem(func,                         # integrand
                           uT,                           # initial condition
                           (Ts, Te),                     # from which time to which time?
@@ -236,7 +236,7 @@ by multiplying by `fs_per_au`.
 # Arguments
 - `p::SFAAmpSim`: Simulation configuration, which establishes the Grid setup.
 """
-function calculate_amplitude(p::SFAAmpSim, ω::AbstractArray{<:Real}; integration::Symbol=:auto)::AbstractArray{<:Complex}
+function calculate_amplitude(p::SFAAmpSim, ω::AbstractArray{<:Real}; integration::Symbol=:auto, Tmax::Real=-1.0)::AbstractArray{<:Complex}
     NW, Nθ = length(p.W_axis), length(p.θ_axis)
     Nω = size(ω)[1]
     NA = length(p.Al_axis)
@@ -249,7 +249,10 @@ function calculate_amplitude(p::SFAAmpSim, ω::AbstractArray{<:Real}; integratio
 
     ωmax = maximum(ω)
     dt = 2π/ωmax/100
-    Ts, Te = 0, Tl
+    if Tmax <= 0
+        Tmax = Tl
+    end
+    Ts, Te = 0, Tmax
     alg = nothing
     kwargs = Dict{Symbol, Any}(:dt => dt,
                                :abstol => 1e-7,
@@ -266,6 +269,8 @@ function calculate_amplitude(p::SFAAmpSim, ω::AbstractArray{<:Real}; integratio
         alg = Rodas4P()
     elseif integration == :KenCarp4
         alg = KenCarp4()
+    elseif integration == :ImplicitEuler
+        alg = ImplicitEuler()
     end
 
     ϕT = similar(p.W_axis, NW, Nθ, NA)
@@ -326,6 +331,7 @@ by multiplying by `fs_per_au`, and converted to nm, by multiplying by `nm_per_au
 - `nbins_Up`: Number of bins in the ponderomotive potential.
 - `n_parallel`: Number of asynchronous workers to use.
 - `use_gpu`: If true, use GPU processing.
+- `Tmax`: maximum time axis value in a.u. If non-positive, assume the laser period. Set it in case of strong interference effects, which are visible over multiple laser cycles.
 """
 function simulate_amplitude(;
                   fel_energy::Real,
@@ -340,10 +346,11 @@ function simulate_amplitude(;
                   nbins_Up::Integer=40,
                   n_parallel::Integer=1,
                   use_gpu::Bool=true,
-                  oversampling::Int64=2,
+                  oversampling::Int64=1,
                   integration::Symbol=:auto,
                   beta::Real=2.0,
-                  polarization=:horizontal
+                  polarization=:horizontal,
+                  Tmax::Real=-1.0
                   )
 
     #eval(macroexpand(Distributed, quote @everywhere using .QuackSim end))
@@ -367,16 +374,22 @@ function simulate_amplitude(;
     # FEL set photon energy
     ωx = fel_energy/eV_per_au
 
+    # select the maximum time axis value
+    # if non-positive, take the laser period
+    if Tmax <= 0
+        Tmax = Tl
+    end
+
     # FEL photon energy axis
     # ifft of energy axis is the time axis and maximum time is the energy sampling rate/2
     # E(t) = F^-1 [E(ω)]
     # t axis: (0, Tl) with nbins_time
     # ω axis: (-0.5ωs, 0.5ωs) for ωs = 1/δt
     # maybe divide by 2π, since time is in units of 2π, as there is no 2π in the FT of E(t)
-    δt = Tl/nbins_time
+    δt = Tmax/nbins_time
     ωs = 2π/δt
     ω_axis = ωx .+ fftfreq(oversampling*nbins_time, ωs)
-    time_axis = collect(LinRange(0.0, oversampling*Tl, oversampling*nbins_time))
+    time_axis = collect(LinRange(0.0, oversampling*Tmax, oversampling*nbins_time))
 
     # amplitude of the A-field for streaking: let's bump electrons
     # A = -c int_-inf^t E(t') dt'
@@ -439,7 +452,7 @@ function simulate_amplitude(;
     chunk_size = Int(Nω)
     k_chunks = collect(Iterators.partition(1:Nω, chunk_size))
     @sync begin
-        B = asyncmap(k -> Array(calculate_amplitude(p, p.ω_axis[k]; integration=integration)), k_chunks;
+        B = asyncmap(k -> Array(calculate_amplitude(p, p.ω_axis[k]; integration=integration, Tmax=Tmax)), k_chunks;
                      ntasks=n_parallel);
         # concatenate results over energy axis
         B = cat(B...; dims=4);
@@ -482,6 +495,7 @@ function simulate_amplitude(;
         # the wavelength of the laser
         fid["ll"] = λl*nm_per_au;
         fid["Tl"] = Tl*fs_per_au;
+        fid["Tmax"] = Tmax*fs_per_au;
         # Ip
         fid["Ip"] = Ip*eV_per_au;
         # gas
